@@ -1,6 +1,5 @@
 import webpack from "webpack";
 import path from "path";
-import BabiliPlugin from "babili-webpack-plugin";
 const SOURCE = path.join(__dirname, "src");
 const DESTINATION = path.join(__dirname, "dist");
 const ENV = process.env.NODE_ENV;
@@ -34,12 +33,11 @@ export default {
       },
     ],
   },
-  devtool: isDebug ? "inline-sourcemap" : false,
+  devtool: isDebug ? "source-map" : false,
   plugins: isDebug
     ? []
     : [
         new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.optimize.ModuleConcatenationPlugin(),
-        new BabiliPlugin(),
       ],
 };

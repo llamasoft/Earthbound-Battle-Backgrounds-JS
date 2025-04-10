@@ -40,6 +40,7 @@ var setupEngine = (exports.setupEngine = function setupEngine() {
     canvas: document.querySelector("canvas")
   });
 
+  console.log("Created layers");
   document.engine = engine;
   document.engine.animate(debug);
 });
