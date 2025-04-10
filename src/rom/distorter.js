@@ -1,5 +1,5 @@
 import { HORIZONTAL, HORIZONTAL_INTERLACED, VERTICAL } from './distortion_effect'
-import { SNES_WIDTH, SNES_HEIGHT } from '../engine'
+import { OVERSCALE_Y, RENDER_WIDTH, RENDER_HEIGHT } from '../engine'
 const { PI: π, sin, round, floor } = Math
 const R = 0
 const G = 1
@@ -82,9 +82,8 @@ export default class Distorter {
     const { type: distortionEffect } = effect
     const newBitmap = destinationBitmap
     const oldBitmap = sourceBitmap
-    /* TODO: Hardcoing is bad */
-    const dstStride = 1024
-    const srcStride = 1024
+    const dstStride = RENDER_WIDTH * 4
+    const srcStride = RENDER_WIDTH * 4
     /*
       Given the list of 4 distortions and the tick count, decide which
       effect to use:
@@ -106,12 +105,12 @@ export default class Distorter {
     */
     let x, y, bPos, sPos, dx
     this.setOffsetConstants(ticks, effect)
-    for (y = 0; y < SNES_HEIGHT; ++y) {
+    for (y = 0; y < RENDER_HEIGHT; ++y) {
       const offset = this.getAppliedOffset(y, distortionEffect)
       const L = distortionEffect === VERTICAL ? offset : y
-      for (x = 0; x < SNES_WIDTH; ++x) {
+      for (x = 0; x < RENDER_WIDTH; ++x) {
         bPos = x * 4 + y * dstStride
-        if (y < letterbox || y > SNES_HEIGHT - letterbox) {
+        if (y < letterbox * OVERSCALE_Y || y > RENDER_HEIGHT - letterbox * OVERSCALE_Y) {
           newBitmap[bPos + R] = 0
           newBitmap[bPos + G] = 0
           newBitmap[bPos + B] = 0
@@ -120,7 +119,7 @@ export default class Distorter {
         }
         dx = x
         if (distortionEffect === HORIZONTAL || distortionEffect === HORIZONTAL_INTERLACED) {
-          dx = mod(x + offset, SNES_WIDTH)
+          dx = mod(x + offset, RENDER_WIDTH)
         }
         sPos = dx * 4 + L * srcStride
         /* Either copy or add to the destination bitmap */

@@ -1,3 +1,5 @@
+import { OVERSCALE_X, OVERSCALE_Y } from '../engine'
+import { LAYER_WIDTH, LAYER_HEIGHT, BG_WIDTH, BG_HEIGHT } from './background_layer'
 export default class ROMGraphics {
   constructor (bitsPerPixel) {
     this.bitsPerPixel = bitsPerPixel
@@ -35,8 +37,7 @@ export default class ROMGraphics {
     let b2 = 0
     let verticalFlip = false
     let horizontalFlip = false
-    /* TODO: Hardcoding is bad; how do I get the stride normally? */
-    const stride = 1024
+    const stride = LAYER_WIDTH * 4
     /* For each pixel in the 256×256 grid, we need to render the image found in the dump */
     for (let i = 0; i < 32; ++i) {
       for (let j = 0; j < 32; ++j) {
@@ -48,7 +49,11 @@ export default class ROMGraphics {
         verticalFlip = (block & 0x8000) !== 0
         horizontalFlip = (block & 0x4000) !== 0
         subPalette = (block >> 10) & 7
-        this.drawTile(data, stride, i * 8, j * 8, palette, tile, subPalette, verticalFlip, horizontalFlip)
+        for (let offset_x = 0; offset_x + i * 8 < LAYER_WIDTH; offset_x += BG_WIDTH) {
+          for (let offset_y = 0; offset_y + j * 8 < LAYER_HEIGHT; offset_y += BG_HEIGHT) {
+            this.drawTile(data, stride, offset_x + i * 8, offset_y + j * 8, palette, tile, subPalette, verticalFlip, horizontalFlip)
+          }
+        }
       }
     }
     return data

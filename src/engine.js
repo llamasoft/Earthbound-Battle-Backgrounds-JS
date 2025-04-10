@@ -1,6 +1,11 @@
 let frameID = -1
 export const SNES_WIDTH = 256
 export const SNES_HEIGHT = 224
+export const OVERSCALE_X = 2
+export const OVERSCALE_Y = 2
+export const RENDER_WIDTH = Math.floor(SNES_WIDTH * OVERSCALE_X)
+// NOTE: This should be "SNES_HEIGHT * OVERSCALE_Y" but it leads to weird pattern cropping.
+export const RENDER_HEIGHT = Math.floor(SNES_WIDTH * OVERSCALE_Y)
 export default class Engine {
   constructor (layers = [], opts) {
     this.layers = layers
@@ -27,8 +32,8 @@ export default class Engine {
       this.alpha[1] = 1
     }
     context.imageSmoothingEnabled = false
-    canvas.width = SNES_WIDTH
-    canvas.height = SNES_HEIGHT
+    canvas.width = RENDER_WIDTH
+    canvas.height = RENDER_HEIGHT
     const image = context.getImageData(0, 0, canvas.width, canvas.height)
     const drawFrame = () => {
       frameID = requestAnimationFrame(drawFrame)

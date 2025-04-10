@@ -4,13 +4,15 @@ import DistortionEffect from './distortion_effect'
 import BattleBackground from './battle_background'
 import Distorter from './distorter'
 import PaletteCycle from './palette_cycle'
-const [WIDTH, HEIGHT] = [256, 256]
+import { OVERSCALE_X, OVERSCALE_Y } from '../engine'
+export const [BG_WIDTH, BG_HEIGHT] = [256, 256]
+export const [LAYER_WIDTH, LAYER_HEIGHT] = [Math.floor(BG_WIDTH*OVERSCALE_X), Math.floor(BG_HEIGHT*OVERSCALE_Y)]
 export default class BackgroundLayer {
   constructor (entry, rom) {
     this.rom = rom
     this.graphics = null
     this.paletteCycle = null
-    this.pixels = new Int16Array(WIDTH * HEIGHT * 4)
+    this.pixels = new Int16Array(LAYER_WIDTH * LAYER_HEIGHT * 4)
     this.distorter = new Distorter(this.pixels)
     this.loadEntry(entry)
   }
