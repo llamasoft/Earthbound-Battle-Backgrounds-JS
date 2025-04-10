@@ -15,6 +15,7 @@ export default class Engine {
     this.alpha = opts.alpha
     this.canvas = opts.canvas
     this.tick = 0
+    this.paused = false
   }
   animate (debug) {
     let then = Date.now()
@@ -39,7 +40,7 @@ export default class Engine {
       frameID = requestAnimationFrame(drawFrame)
       const now = Date.now()
       elapsed = now - then
-      if (elapsed > fpsInterval) {
+      if (elapsed > fpsInterval && !this.paused) {
         then = now - (elapsed % fpsInterval)
         for (let i = 0; i < this.layers.length; ++i) {
           if (debug) {
@@ -57,4 +58,6 @@ export default class Engine {
     }
     drawFrame()
   }
+  pause() { this.paused = true; }
+  unpause() { this.paused = false; }
 }

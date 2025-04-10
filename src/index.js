@@ -17,9 +17,9 @@ var setupEngine = (exports.setupEngine = function setupEngine() {
   let frameskip = parseFrameskipParam(params.frameskip);
   let aspectRatio = parseAspectRatioParam(params.aspectRatio);
   parseFullscreen(params.fullscreen);
+  let fps = parseFPS(params.fps);
   let debug = params.debug === "true";
 
-  let fps = 30;
   let alpha = parseFloat(0.5);
 
   if (layer2Val === 0) {

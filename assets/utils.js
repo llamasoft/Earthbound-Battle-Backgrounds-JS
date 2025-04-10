@@ -65,6 +65,16 @@ function parseAspectRatioParam(number) {
   return num;
 }
 
+function parseFPS(number) {
+  var canvas = document.querySelector("canvas");
+  var num = Number(number);
+  if (isNaN(num)) return (num = 30);
+  else if (num < 1 || num > 60) return (num = 30);
+
+  canvas.dataset.fps = num;
+  return num;
+}
+
 function parseFullscreen(fullscreen) {
   if (fullscreen == "true") {
     setupFullscreen();

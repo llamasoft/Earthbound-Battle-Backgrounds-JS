@@ -196,6 +196,16 @@
                       <option value="64">Narrow Letterbox (8:3)</option>
                     </select>
 
+                    <label for="fps" class="f5 b db mv2 mb2"
+                      >FPS</label
+                    >
+                    <input
+                      id="fps"
+                      type="number"
+                      min="1" max="60"
+                      class="w-100 db h2 f5 bg-near-white ba b--sliver"
+                    />
+
                     <label for="frameskip" class="f5 b db mv2 mb2"
                       >Frameskip</label
                     >
@@ -215,8 +225,11 @@
                       <option value="10">10</option>
                     </select>
 
-                    <div class="w-100 db h2 f5"></div>
-                    <div class="w-100 db h2 f5"></div>
+                    <a
+                      id="paused"
+                      class="pointer f5 link dim ba ph3 pv2 mv2 mb2 dib black"
+                      >Pause/Resume</a
+                    >
                     <a
                       id="fullscreen"
                       class="pointer f5 link dim ba ph3 pv2 mv2 mb2 dib black"
@@ -226,7 +239,7 @@
                       id="gifMakerContainer"
                       ></a
                     >
-                    <span class="f6"</span>
+                    <span class="f6"></span>
                   </form>
                 </div>
               </div>

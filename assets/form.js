@@ -231,7 +231,9 @@ let content,
   layer2,
   suggested,
   aspectRatio,
-  frameskip;
+  frameskip,
+  fps,
+  paused;
 
 document.addEventListener("DOMContentLoaded", function () {
   content = document.querySelector("section#everything");
@@ -240,6 +242,8 @@ document.addEventListener("DOMContentLoaded", function () {
   suggested = document.getElementById("suggested");
   aspectRatio = document.getElementById("aspectRatio");
   frameskip = document.getElementById("frameskip");
+  fps = document.getElementById("fps");
+  paused = document.getElementById("paused");
   let randomLayer = document.getElementById("randomLayer");
   let endlessRandom = document.getElementById("endlessRandom");
   let fullscreen = document.getElementById("fullscreen");
@@ -250,6 +254,7 @@ document.addEventListener("DOMContentLoaded", function () {
     randomLayer.onclick = setRandomLayer;
     endlessRandom.onclick = setEndlessRandom;
     fullscreen.onclick = setupFullscreen;
+    paused.onclick = togglePaused;
 
     createLayerDropdown();
     createSuggestedLayersDropdown();
@@ -337,6 +342,15 @@ function setupDropdownPushStates() {
       setUrlFromString("frameskip=" + value)
     );
   };
+
+  fps.onchange = function (e) {
+    var value = this.value;
+    History.pushState(
+      { fps: value },
+      document.title,
+      setUrlFromString("fps=" + value)
+    );
+  };
 }
 
 function setRandomLayer() {
@@ -386,6 +400,9 @@ function setupSelectedValues() {
     new RegExp(frameskipReplace),
     "selected " + frameskipReplace
   );
+
+  fps.value = parseInt(canvas.dataset.fps);
+  paused.checked = (canvas.dataset.paused == "true");
 }
 
 function setupFullscreen() {
@@ -400,6 +417,10 @@ function setupFullscreen() {
       setUrlFromString("fullscreen=" + true)
     );
   }
+}
+
+function togglePaused() {
+  document.engine.paused = !document.engine.paused;
 }
 
 document.addEventListener("keyup", function (event) {
